@@ -1,23 +1,24 @@
 dist: bionic
-
 language: go
-
 go:
-  - 1.13.x
-
+- 1.13.x
 sudo: true
-
 addons:
   apt:
     update: true
-
-before_install:                                                                 
-  - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh  
-  - dep ensure
-  - sudo apt install poppler-utils wv unrtf tidy
-
+install:
+- go get github.com/ahmetb/govvv
 script:
-  - go test -race -coverprofile=coverage.txt -covermode=atomic
-
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+- GOOS="darwin" GOARCH="amd64" govvv build -o esl_darwin64 cmd/main.go
+- GOOS="linux" GOARCH="amd64" govvv build -o esl_linux64 cmd/main.go
+deploy:
+  provider: releases
+  api_key:
+    secure: R9pyyoRe44uX+/hlypHutdFqs5D6un5WNYa3uc1c8jM2DLoFbhRrPWWQSSUesyQXrknnSg1oC3zuh5GInWq8WpxQqb1OrnoqROr7dMhYb97jPQ6QcRwto17eER0olmdMZ0mxR8yt+Cz8t0Z51YeBMjNu37YYhNRCMkjkkFFvAQ8X1zY3RUzP9ecTE0LVOVDOaVoQQ1xICVbcJQJlKGuYzhmyEXsbOwzfAZC9O1w2gNzf6Px1zhUlGSfjTzM3lqLQa85n156CVw2zjyNdEcPLHZGzpXhBY36UYCv8ezrUQqDkxsjgnAQitRSkqFLQz1VrXDnxR6WXTQNTV7/kK/tQ/tS2JENdesjYV33m/hH/bm6IzjFDXyCx779a/3Jaxw5cYeYlvo0IC19eSsc/ckj43VX29AJcCqPznhGNot0wTxSioFvyOTYEfYhIrozeiPrGTPozAZpws5Sxu+mBUTNFCK3o7LwfUc+d9hCHvHIbG2X1lxqAIoOhW7lznOSOveS3FzC/ghd5lFq7em2CmgftDngZuv6q1efkjlKCEdgTtnsrin4+/P5B3Ej3FjkhqOnHSIs2GaRRkgOAar34J7618vJFQrTPyqN49fdK3UZRI8epbFchfDQxyZG5fA2ywYML+ftVC5RcKENsWkhTDjVLUkE5jZw6uJnTj0HCm8TlpKU=
+  file: 
+    - esl_darwin64
+    - esl_linux64
+  on:
+    repo: rguilmont/esl
+    tag: true
+  skip_cleanup: 'true'
