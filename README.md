@@ -9,13 +9,13 @@ For now, it is assumed that the logs comes from a Kubernetes cluster. I will mak
 ## Usage
 
 ```
-Usage : ./test <context>
+Usage : ./esl [flags...] <context>
   -filter string
-      Overide filter in your context
+        Overide filter in your context
   -from string
-      Start timestamp. (default "now-10m")
+        Start timestamp. (default "now-10m")
   -to string
-      End timestamp. By default there's no end timestamp, it will infinitely loop.
+        End timestamp. By default there's no end timestamp, it will infinitely loop.
 ```
 ## Configuration
 
