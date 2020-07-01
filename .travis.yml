@@ -19,6 +19,5 @@ deploy:
     - esl_darwin64
     - esl_linux64
   on:
-    repo: rguilmont/esl
     tag: true
   skip_cleanup: 'true'
