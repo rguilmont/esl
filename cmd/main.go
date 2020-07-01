@@ -17,6 +17,13 @@ import (
 
 const esJSONPrefix = "_source."
 
+// Export variables for version
+var (
+	GitSummary string
+	GitCommit  string
+	BuildDate  string
+)
+
 func currentFilter(contextFilter string, cliFilter string) string {
 	if cliFilter != "" {
 		return cliFilter
@@ -34,10 +41,21 @@ func main() {
 		flag.PrintDefaults()
 
 	}
+
+	version := flag.Bool("v", false, "Display version.")
+
 	from := flag.String("from", "now-10m", "Start timestamp.")
 	to := flag.String("to", "", "End timestamp. By default there's no end timestamp, it will infinitely loop.")
 	filter := flag.String("filter", "", "Overide filter in your context")
 	flag.Parse()
+
+	if *version {
+		fmt.Printf("Version:     %v\n", GitSummary)
+		fmt.Printf("Commit hash: %v\n", GitCommit)
+		fmt.Printf("Build date:  %v\n", BuildDate)
+		os.Exit(0)
+	}
+
 	if len(flag.Args()) != 1 {
 		fmt.Println("Invalid usage")
 
