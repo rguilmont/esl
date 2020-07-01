@@ -19,5 +19,5 @@ deploy:
     - esl_darwin64
     - esl_linux64
   on:
-    tag: true
+    tags: true
   skip_cleanup: 'true'
