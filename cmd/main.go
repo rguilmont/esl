@@ -30,7 +30,7 @@ func main() {
 		fmt.Println("esl, elasticsearch logs query utility.")
 		fmt.Println("By default, logs will be tailed, unless from and to flag are set.")
 
-		fmt.Printf("Usage : %v <context>\n", os.Args[0])
+		fmt.Printf("Usage : %v [flags...] <context>\n", os.Args[0])
 		flag.PrintDefaults()
 
 	}
@@ -38,6 +38,14 @@ func main() {
 	to := flag.String("to", "", "End timestamp. By default there's no end timestamp, it will infinitely loop.")
 	filter := flag.String("filter", "", "Overide filter in your context")
 	flag.Parse()
+	if len(flag.Args()) != 1 {
+		fmt.Println("Invalid usage")
+
+		fmt.Printf("Usage : %v [flags...] <context>\n", os.Args[0])
+
+		flag.PrintDefaults()
+		os.Exit(1)
+	}
 	c := flag.Args()[0]
 
 	config, err := configuration.LoadConf(nil)
