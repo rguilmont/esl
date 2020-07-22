@@ -2,6 +2,7 @@ package formater
 
 import (
 	"fmt"
+	"strings"
 
 	gabs "github.com/Jeffail/gabs/v2"
 	"github.com/gookit/color"
@@ -45,6 +46,13 @@ func NewFormater(f Formater, mapping LogFieldsMapping) (LogFormater, error) {
 	return nil, fmt.Errorf("unknown formater %v", f)
 }
 
+func linebroke(s string) string {
+	if !strings.HasSuffix(s, "\n") {
+		return s + "\n"
+	}
+	return s
+}
+
 type defaultFormater struct {
 	mapping LogFieldsMapping
 }
@@ -52,7 +60,8 @@ type defaultFormater struct {
 func (f defaultFormater) PrintLog(log *gabs.Container) {
 	fmt.Printf("[%v : %v] %v",
 		log.Path(f.mapping.DateField).Data(), log.Path(f.mapping.ServiceField).Data(),
-		log.Path(f.mapping.LogField).Data())
+		linebroke(log.Path(f.mapping.LogField).Data().(string)))
+
 }
 
 type coloredFormater struct {
@@ -65,7 +74,8 @@ func (f coloredFormater) PrintLog(log *gabs.Container) {
 		color.Blue.Sprint(log.Path(f.mapping.ServiceField).Data()),
 
 		// Try to print colors to log itself if contains some keywords
-		log.Path(f.mapping.LogField).Data())
+		linebroke(log.Path(f.mapping.LogField).Data().(string)))
+
 }
 
 type rawFormater struct{}
